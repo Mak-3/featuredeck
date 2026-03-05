@@ -30,7 +30,7 @@ export default function Footer() {
                   />
                 </svg>
               </div>
-              <span className="font-medium text-[15px]">prodFeedback</span>
+              <span className="font-medium text-[15px]">FeatureDeck</span>
             </Link>
             <p className="text-[13px] text-muted leading-relaxed">
               Feature feedback for React Native apps. Know what to build next.
@@ -89,7 +89,7 @@ export default function Footer() {
 
         <div className="flex flex-col sm:flex-row items-center justify-between pt-8 border-t border-border gap-4">
           <p className="text-[12px] text-muted">
-            © {new Date().getFullYear()} prodFeedback
+            © {new Date().getFullYear()} FeatureDeck
           </p>
           <div className="flex items-center gap-4">
             <a

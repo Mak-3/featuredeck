@@ -142,7 +142,7 @@ function LoginPageContent() {
                 />
               </svg>
             </div>
-            <span className="font-medium text-[15px]">prodFeedback</span>
+            <span className="font-medium text-[15px]">FeatureDeck</span>
           </Link>
           <h1 className="text-3xl font-medium mb-2">Welcome back</h1>
           <p className="text-muted text-sm">

@@ -62,7 +62,7 @@ export default function Header() {
               />
             </svg>
           </div>
-          <span className="font-medium text-[15px]">prodFeedback</span>
+          <span className="font-medium text-[15px]">FeatureDeck</span>
         </Link>
 
         <div className="hidden md:flex items-center gap-8">

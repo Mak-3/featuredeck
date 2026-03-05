@@ -83,7 +83,7 @@ function ConfirmEmailContent() {
                 />
               </svg>
             </div>
-            <span className="font-medium text-[15px]">prodFeedback</span>
+            <span className="font-medium text-[15px]">FeatureDeck</span>
           </Link>
           <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
             <svg

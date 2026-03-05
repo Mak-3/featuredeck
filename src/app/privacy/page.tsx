@@ -43,7 +43,7 @@ export default function PrivacyPage() {
             <section>
               <h2 className="text-2xl font-medium mb-4">1. Introduction</h2>
               <p className="text-muted leading-relaxed mb-4">
-                {"prodFeedback (\"we,\" \"our,\" or \"us\") is committed to protecting your privacy. This Privacy Policy explains "}
+                {"FeatureDeck (\"we,\" \"our,\" or \"us\") is committed to protecting your privacy. This Privacy Policy explains "}
                 how we collect, use, disclose, and safeguard your information when you use our Service.
               </p>
             </section>
@@ -134,8 +134,8 @@ export default function PrivacyPage() {
               </ul>
               <p className="text-muted leading-relaxed mt-4">
                 To exercise these rights, please contact us at{" "}
-                <a href="mailto:privacy@prodfeedback.com" className="text-accent hover:opacity-80 transition-opacity">
-                  privacy@prodfeedback.com
+                <a href="mailto:privacy@featuredeck.in" className="text-accent hover:opacity-80 transition-opacity">
+                  privacy@featuredeck.in
                 </a>
               </p>
             </section>
@@ -189,8 +189,8 @@ export default function PrivacyPage() {
               <h2 className="text-2xl font-medium mb-4">13. Contact Us</h2>
               <p className="text-muted leading-relaxed mb-4">
                 If you have any questions about this Privacy Policy, please contact us at{" "}
-                <a href="mailto:privacy@prodfeedback.com" className="text-accent hover:opacity-80 transition-opacity">
-                  privacy@prodfeedback.com
+                <a href="mailto:privacy@featuredeck.in" className="text-accent hover:opacity-80 transition-opacity">
+                  privacy@featuredeck.in
                 </a>
               </p>
             </section>

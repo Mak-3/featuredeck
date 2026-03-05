@@ -43,7 +43,7 @@ export default function TermsPage() {
             <section>
               <h2 className="text-2xl font-medium mb-4">1. Agreement to Terms</h2>
               <p className="text-muted leading-relaxed mb-4">
-                {"By accessing or using prodFeedback (\"Service\"), you agree to be bound by these Terms of Service (\"Terms\"). "}
+                {"By accessing or using FeatureDeck (\"Service\"), you agree to be bound by these Terms of Service (\"Terms\"). "}
                 If you disagree with any part of these terms, you may not access the Service.
               </p>
             </section>
@@ -51,7 +51,7 @@ export default function TermsPage() {
             <section>
               <h2 className="text-2xl font-medium mb-4">2. Description of Service</h2>
               <p className="text-muted leading-relaxed mb-4">
-                prodFeedback is a feature feedback platform designed for React Native applications. The Service allows users 
+                FeatureDeck is a feature feedback platform designed for React Native applications. The Service allows users 
                 to collect, manage, and prioritize feature requests and user feedback for their applications.
               </p>
             </section>
@@ -85,7 +85,7 @@ export default function TermsPage() {
             <section>
               <h2 className="text-2xl font-medium mb-4">5. Intellectual Property</h2>
               <p className="text-muted leading-relaxed mb-4">
-                The Service and its original content, features, and functionality are owned by prodFeedback and are protected 
+                The Service and its original content, features, and functionality are owned by FeatureDeck and are protected 
                 by international copyright, trademark, patent, trade secret, and other intellectual property laws.
               </p>
             </section>
@@ -128,7 +128,7 @@ export default function TermsPage() {
             <section>
               <h2 className="text-2xl font-medium mb-4">10. Limitation of Liability</h2>
               <p className="text-muted leading-relaxed mb-4">
-                In no event shall prodFeedback be liable for any indirect, incidental, special, consequential, or punitive 
+                In no event shall FeatureDeck be liable for any indirect, incidental, special, consequential, or punitive 
                 damages, including loss of profits, data, or use, incurred by you or any third party.
               </p>
             </section>
@@ -146,8 +146,8 @@ export default function TermsPage() {
               <h2 className="text-2xl font-medium mb-4">12. Contact Information</h2>
               <p className="text-muted leading-relaxed mb-4">
                 If you have any questions about these Terms, please contact us at{" "}
-                <a href="mailto:legal@prodfeedback.com" className="text-accent hover:opacity-80 transition-opacity">
-                  legal@prodfeedback.com
+                <a href="mailto:legal@featuredeck.in" className="text-accent hover:opacity-80 transition-opacity">
+                  legal@featuredeck.in
                 </a>
               </p>
             </section>

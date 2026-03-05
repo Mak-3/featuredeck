@@ -16,7 +16,7 @@ const fraunces = Fraunces({
 });
 
 export const metadata: Metadata = {
-  title: "prodFeedback - Feature Feedback for React Native",
+  title: "FeatureDeck - Feature Feedback for React Native",
   description:
     "Collect feature requests, let users vote, and ship what matters. Built natively for React Native.",
   keywords: ["React Native", "feature requests", "user feedback", "mobile app", "product roadmap"],

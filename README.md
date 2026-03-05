@@ -1,4 +1,4 @@
-# ProdFeedback
+# FeatureDeck
 
 A feedback management application built with Next.js (full-stack).
 
@@ -49,7 +49,7 @@ The application will run on `http://localhost:3000`
 ## Project Structure
 
 ```
-prodFeedback/
+featureDeck/
 ├── src/
 │   ├── app/
 │   │   ├── api/       # Next.js API routes (serverless functions)

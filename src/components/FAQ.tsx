@@ -12,7 +12,7 @@ const faqs = [
   {
     question: "How does the voting system work?",
     answer:
-      "Each user gets one vote per feature request. They can prodFeedback ideas they care about, and the most-wanted features naturally rise to the top. You see real demand at a glance.",
+      "Each user gets one vote per feature request. They can FeatureDeck ideas they care about, and the most-wanted features naturally rise to the top. You see real demand at a glance.",
   },
   {
     question: "When do users get notified?",

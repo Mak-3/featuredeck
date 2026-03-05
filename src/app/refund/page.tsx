@@ -42,7 +42,7 @@ export default function RefundPolicyPage() {
           <div className="prose prose-sm max-w-none space-y-8">
             <section>
               <p className="text-muted leading-relaxed mb-4">
-                ProdFeedback is sold and billed through our Merchant of Record,{" "}
+                FeatureDeck is sold and billed through our Merchant of Record,{" "}
                 <strong>Lemon Squeezy</strong>. All payments, taxes, and refunds
                 are processed by Lemon Squeezy on our behalf.
               </p>
@@ -53,7 +53,7 @@ export default function RefundPolicyPage() {
                 1. Free Trial (If Applicable)
               </h2>
               <p className="text-muted leading-relaxed mb-4">
-                We encourage users to evaluate ProdFeedback during the free
+                We encourage users to evaluate FeatureDeck during the free
                 trial period. No refunds will be issued for failure to cancel
                 before the trial converts to a paid subscription.
               </p>
@@ -64,7 +64,7 @@ export default function RefundPolicyPage() {
                 2. Subscription Billing
               </h2>
               <p className="text-muted leading-relaxed mb-4">
-                ProdFeedback operates on a recurring subscription model (monthly
+                FeatureDeck operates on a recurring subscription model (monthly
                 or annual). By subscribing, you authorize recurring billing
                 unless cancelled prior to renewal.
               </p>
@@ -114,10 +114,10 @@ export default function RefundPolicyPage() {
               <p className="text-muted leading-relaxed mb-4">
                 To request a refund, email:{" "}
                 <a
-                  href="mailto:support@prodfeedback.com"
+                  href="mailto:support@featuredeck.in"
                   className="text-accent hover:opacity-80 transition-opacity"
                 >
-                  support@prodfeedback.com
+                  support@featuredeck.in
                 </a>
               </p>
               <p className="text-muted leading-relaxed mb-3">Include:</p>

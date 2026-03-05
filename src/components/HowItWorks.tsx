@@ -13,7 +13,7 @@ const steps = [
     number: "02",
     title: "Community votes",
     description:
-      "Other users prodFeedback the ideas they care about. Popular requests rise to the top naturally.",
+      "Other users FeatureDeck the ideas they care about. Popular requests rise to the top naturally.",
   },
   {
     number: "03",

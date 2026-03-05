@@ -100,7 +100,7 @@ export default function DocsPage() {
             </Link>
             <h1 className="text-4xl font-medium mb-3">Documentation</h1>
             <p className="text-muted text-lg">
-              Integrate prodFeedback into your React Native app in minutes. Collect feature requests, 
+              Integrate FeatureDeck into your React Native app in minutes. Collect feature requests, 
               let users vote, and build what matters.
             </p>
           </div>
@@ -110,13 +110,13 @@ export default function DocsPage() {
             <section>
               <h2 className="text-3xl font-medium mb-4">Installation</h2>
               <p className="text-muted mb-6">
-                Install the prodFeedback React Native SDK using npm or yarn.
+                Install the FeatureDeck React Native SDK using npm or yarn.
               </p>
               <CodeBlock
                 id="install"
-                code={`npm install @prodfeedback/react-native
+                code={`npm install @FeatureDeck/react-native
 # or
-yarn add @prodfeedback/react-native`}
+yarn add @FeatureDeck/react-native`}
                 language="bash"
               />
               <p className="text-sm text-muted mt-4">
@@ -135,17 +135,17 @@ yarn add @prodfeedback/react-native`}
                 <div>
                   <h3 className="text-xl font-medium mb-3">1. Initialize the SDK</h3>
                   <p className="text-muted mb-4">
-                    Initialize prodFeedback in your app entry point (usually <code className="bg-surface px-1.5 py-0.5 rounded text-xs">App.tsx</code> or <code className="bg-surface px-1.5 py-0.5 rounded text-xs">index.js</code>).
+                    Initialize FeatureDeck in your app entry point (usually <code className="bg-surface px-1.5 py-0.5 rounded text-xs">App.tsx</code> or <code className="bg-surface px-1.5 py-0.5 rounded text-xs">index.js</code>).
                   </p>
                   <CodeBlock
                     id="init"
-                    code={`import { ProdFeedback } from '@prodfeedback/react-native';
+                    code={`import { FeatureDeck } from '@FeatureDeck/react-native';
 
 // Initialize the SDK
-await ProdFeedback.init({
+await FeatureDeck.init({
   supabaseUrl: 'https://your-project.supabase.co',
   supabaseKey: 'your-anon-key',
-  appKey: 'uo_pk_xxx', // Get this from your prodFeedback dashboard
+  appKey: 'uo_pk_xxx', // Get this from your FeatureDeck dashboard
   user: {
     id: 'user-123',
     email: 'user@example.com',
@@ -158,17 +158,17 @@ await ProdFeedback.init({
                 <div>
                   <h3 className="text-xl font-medium mb-3">2. Wrap Your App with Provider</h3>
                   <p className="text-muted mb-4">
-                    Add the <code className="bg-surface px-1.5 py-0.5 rounded text-xs">ProdFeedbackProvider</code> to your app root.
+                    Add the <code className="bg-surface px-1.5 py-0.5 rounded text-xs">FeatureDeckProvider</code> to your app root.
                   </p>
                   <CodeBlock
                     id="provider"
-                    code={`import { ProdFeedbackProvider } from '@prodfeedback/react-native';
+                    code={`import { FeatureDeckProvider } from '@FeatureDeck/react-native';
 
 export default function App() {
   return (
-    <ProdFeedbackProvider>
+    <FeatureDeckProvider>
       {/* Your app content */}
-    </ProdFeedbackProvider>
+    </FeatureDeckProvider>
   );
 }`}
                   />
@@ -181,7 +181,7 @@ export default function App() {
                   </p>
                   <CodeBlock
                     id="button"
-                    code={`import { FeedbackButton } from '@prodfeedback/react-native';
+                    code={`import { FeedbackButton } from '@FeatureDeck/react-native';
 
 export default function HomeScreen() {
   return (
@@ -208,13 +208,13 @@ export default function HomeScreen() {
                   </p>
                   <CodeBlock
                     id="open"
-                    code={`import { ProdFeedback } from '@prodfeedback/react-native';
+                    code={`import { FeatureDeck } from '@FeatureDeck/react-native';
 
 // Open the feedback board
-ProdFeedback.open();
+FeatureDeck.open();
 
 // Or use the alias
-ProdFeedback.openBoard();`}
+FeatureDeck.openBoard();`}
                   />
                 </div>
 
@@ -226,7 +226,7 @@ ProdFeedback.openBoard();`}
                   <CodeBlock
                     id="user"
                     code={`// When user logs in
-ProdFeedback.setUser({
+FeatureDeck.setUser({
   id: 'user-123',
   email: 'user@example.com',
   name: 'John Doe',
@@ -234,7 +234,7 @@ ProdFeedback.setUser({
 });
 
 // When user logs out
-ProdFeedback.setUser(null);`}
+FeatureDeck.setUser(null);`}
                   />
                 </div>
 
@@ -270,7 +270,7 @@ ProdFeedback.setUser(null);`}
                   <CodeBlock
                     id="theme"
                     code={`// Initialize with custom theme
-await ProdFeedback.init({
+await FeatureDeck.init({
   supabaseUrl: 'https://your-project.supabase.co',
   supabaseKey: 'your-anon-key',
   appKey: 'uo_pk_xxx',
@@ -285,7 +285,7 @@ await ProdFeedback.init({
 });
 
 // Or update theme later
-ProdFeedback.setTheme({
+FeatureDeck.setTheme({
   colors: {
     primary: '#10B981',
   },
@@ -293,8 +293,8 @@ ProdFeedback.setTheme({
 });
 
 // Quick theme helpers
-ProdFeedback.enableDarkMode();
-ProdFeedback.enableLightMode();`}
+FeatureDeck.enableDarkMode();
+FeatureDeck.enableLightMode();`}
                   />
                 </div>
 
@@ -309,7 +309,7 @@ ProdFeedback.enableLightMode();`}
   createThemeFromColor, 
   mergeTheme, 
   lightTheme 
-} from '@prodfeedback/react-native';
+} from '@FeatureDeck/react-native';
 
 // Create theme from a single color
 const customTheme = createThemeFromColor('#E85D04', false);
@@ -318,7 +318,7 @@ const customTheme = createThemeFromColor('#E85D04', false);
 const mergedTheme = mergeTheme(lightTheme, customTheme);
 
 // Use in initialization
-await ProdFeedback.init({
+await FeatureDeck.init({
   // ... other config
   theme: mergedTheme,
 });`}
@@ -332,7 +332,7 @@ await ProdFeedback.init({
                   </p>
                   <CodeBlock
                     id="custom-icon"
-                    code={`import { FeedbackButton } from '@prodfeedback/react-native';
+                    code={`import { FeedbackButton } from '@FeatureDeck/react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 <FeedbackButton
@@ -355,7 +355,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
                   <h3 className="text-xl font-medium mb-3">Accessing Features</h3>
                   <CodeBlock
                     id="hooks-features"
-                    code={`import { useFeatures, useFeature } from '@prodfeedback/react-native';
+                    code={`import { useFeatures, useFeature } from '@FeatureDeck/react-native';
 
 function MyComponent() {
   // Get all features
@@ -379,7 +379,7 @@ function MyComponent() {
                   <h3 className="text-xl font-medium mb-3">Upvoting Features</h3>
                   <CodeBlock
                     id="hooks-upvote"
-                    code={`import { useUpvote } from '@prodfeedback/react-native';
+                    code={`import { useUpvote } from '@FeatureDeck/react-native';
 
 function UpvoteButton({ featureId }: { featureId: string }) {
   const { upvotes, hasUpvoted, toggle } = useUpvote(featureId);
@@ -397,10 +397,10 @@ function UpvoteButton({ featureId }: { featureId: string }) {
                   <h3 className="text-xl font-medium mb-3">SDK Actions</h3>
                   <CodeBlock
                     id="hooks-actions"
-                    code={`import { useProdFeedbackActions } from '@prodfeedback/react-native';
+                    code={`import { useFeatureDeckActions } from '@FeatureDeck/react-native';
 
 function MyComponent() {
-  const { open, close, refresh, upvote } = useProdFeedbackActions();
+  const { open, close, refresh, upvote } = useFeatureDeckActions();
   
   return (
     <View>
@@ -420,15 +420,15 @@ function MyComponent() {
               
               <div className="space-y-8">
                 <div>
-                  <h3 className="text-xl font-medium mb-3">ProdFeedback.init()</h3>
+                  <h3 className="text-xl font-medium mb-3">FeatureDeck.init()</h3>
                   <p className="text-muted mb-4">
                     Initialize the SDK with Supabase credentials and configuration.
                   </p>
                   <CodeBlock
                     id="api-init"
-                    code={`ProdFeedback.init(config: ProdFeedbackConfig): Promise<void>
+                    code={`FeatureDeck.init(config: FeatureDeckConfig): Promise<void>
 
-interface ProdFeedbackConfig {
+interface FeatureDeckConfig {
   supabaseUrl: string;      // Your Supabase project URL
   supabaseKey: string;       // Your Supabase anon/public key
   appKey: string;            // Your app public key (e.g., "uo_pk_xxx")
@@ -439,25 +439,25 @@ interface ProdFeedbackConfig {
                 </div>
 
                 <div>
-                  <h3 className="text-xl font-medium mb-3">ProdFeedback.open()</h3>
+                  <h3 className="text-xl font-medium mb-3">FeatureDeck.open()</h3>
                   <p className="text-muted mb-4">
                     Open the feedback board modal.
                   </p>
                   <CodeBlock
                     id="api-open"
-                    code={`ProdFeedback.open(): void
-ProdFeedback.openBoard(): void  // Alias`}
+                    code={`FeatureDeck.open(): void
+FeatureDeck.openBoard(): void  // Alias`}
                   />
                 </div>
 
                 <div>
-                  <h3 className="text-xl font-medium mb-3">ProdFeedback.setUser()</h3>
+                  <h3 className="text-xl font-medium mb-3">FeatureDeck.setUser()</h3>
                   <p className="text-muted mb-4">
                     Set or update the current user. Call when user logs in or profile changes.
                   </p>
                   <CodeBlock
                     id="api-user"
-                    code={`ProdFeedback.setUser(user: User | null): void
+                    code={`FeatureDeck.setUser(user: User | null): void
 
 interface User {
   id: string;
@@ -469,37 +469,37 @@ interface User {
                 </div>
 
                 <div>
-                  <h3 className="text-xl font-medium mb-3">ProdFeedback.setTheme()</h3>
+                  <h3 className="text-xl font-medium mb-3">FeatureDeck.setTheme()</h3>
                   <p className="text-muted mb-4">
                     Update the theme at runtime.
                   </p>
                   <CodeBlock
                     id="api-theme"
-                    code={`ProdFeedback.setTheme(theme: Partial<Theme>): void
-ProdFeedback.enableDarkMode(): void
-ProdFeedback.enableLightMode(): void`}
+                    code={`FeatureDeck.setTheme(theme: Partial<Theme>): void
+FeatureDeck.enableDarkMode(): void
+FeatureDeck.enableLightMode(): void`}
                   />
                 </div>
 
                 <div>
-                  <h3 className="text-xl font-medium mb-3">ProdFeedback.openFeature()</h3>
+                  <h3 className="text-xl font-medium mb-3">FeatureDeck.openFeature()</h3>
                   <p className="text-muted mb-4">
                     Navigate directly to a specific feature.
                   </p>
                   <CodeBlock
                     id="api-feature"
-                    code={`ProdFeedback.openFeature(featureId: string): void`}
+                    code={`FeatureDeck.openFeature(featureId: string): void`}
                   />
                 </div>
 
                 <div>
-                  <h3 className="text-xl font-medium mb-3">ProdFeedback.upvote()</h3>
+                  <h3 className="text-xl font-medium mb-3">FeatureDeck.upvote()</h3>
                   <p className="text-muted mb-4">
                     Programmatically upvote a feature.
                   </p>
                   <CodeBlock
                     id="api-upvote"
-                    code={`ProdFeedback.upvote(featureId: string): Promise<void>`}
+                    code={`FeatureDeck.upvote(featureId: string): Promise<void>`}
                   />
                 </div>
               </div>
@@ -517,7 +517,7 @@ ProdFeedback.enableLightMode(): void`}
                   </p>
                   <CodeBlock
                     id="advanced-filters"
-                    code={`ProdFeedback.setFilters({
+                    code={`FeatureDeck.setFilters({
   status: 'planned',
   category: 'feature',
   search: 'dark mode'
@@ -532,7 +532,7 @@ ProdFeedback.enableLightMode(): void`}
                   </p>
                   <CodeBlock
                     id="advanced-refresh"
-                    code={`await ProdFeedback.refresh();`}
+                    code={`await FeatureDeck.refresh();`}
                   />
                 </div>
 
@@ -543,14 +543,14 @@ ProdFeedback.enableLightMode(): void`}
                   </p>
                   <CodeBlock
                     id="advanced-status"
-                    code={`if (ProdFeedback.isReady()) {
-  ProdFeedback.open();
+                    code={`if (FeatureDeck.isReady()) {
+  FeatureDeck.open();
 } else {
   console.warn('SDK not initialized');
 }
 
-const isVisible = ProdFeedback.isVisible();
-const currentUser = ProdFeedback.getUser();`}
+const isVisible = FeatureDeck.isVisible();
+const currentUser = FeatureDeck.getUser();`}
                   />
                 </div>
               </div>
@@ -560,10 +560,10 @@ const currentUser = ProdFeedback.getUser();`}
             <section>
               <h2 className="text-3xl font-medium mb-4">Getting Your API Key</h2>
               <p className="text-muted mb-6">
-                To use prodFeedback, you need to:
+                To use FeatureDeck, you need to:
               </p>
               <ol className="list-decimal list-inside space-y-3 text-muted ml-4">
-                <li>Create a project in your prodFeedback dashboard</li>
+                <li>Create a project in your FeatureDeck dashboard</li>
                 <li>Get your <code className="bg-surface px-1.5 py-0.5 rounded text-xs">appKey</code> from the project settings</li>
                 <li>Set up your Supabase project and get your <code className="bg-surface px-1.5 py-0.5 rounded text-xs">supabaseUrl</code> and <code className="bg-surface px-1.5 py-0.5 rounded text-xs">supabaseKey</code></li>
                 <li>Run the database schema in your Supabase SQL Editor</li>
@@ -578,10 +578,10 @@ const currentUser = ProdFeedback.getUser();`}
               </p>
               <ul className="space-y-2 text-muted">
                 <li>
-                  📧 Email: <a href="mailto:support@prodfeedback.com" className="text-accent hover:opacity-80 transition-opacity">support@prodfeedback.com</a>
+                  📧 Email: <a href="mailto:support@FeatureDeck.com" className="text-accent hover:opacity-80 transition-opacity">support@FeatureDeck.com</a>
                 </li>
                 <li>
-                  💬 GitHub: <a href="https://github.com/prodfeedback/prodfeedback-rn" className="text-accent hover:opacity-80 transition-opacity">github.com/prodfeedback/prodfeedback-rn</a>
+                  💬 GitHub: <a href="https://github.com/FeatureDeck/FeatureDeck-rn" className="text-accent hover:opacity-80 transition-opacity">github.com/FeatureDeck/FeatureDeck-rn</a>
                 </li>
                 <li>
                   📖 Examples: Check out the example app in the repository

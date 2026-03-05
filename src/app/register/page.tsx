@@ -175,11 +175,11 @@ export default function RegisterPage() {
                 />
               </svg>
             </div>
-            <span className="font-medium text-[15px]">prodFeedback</span>
+            <span className="font-medium text-[15px]">FeatureDeck</span>
           </Link>
           <h1 className="text-3xl font-medium mb-2">Create an account</h1>
           <p className="text-muted text-sm">
-            Get started with prodFeedback today
+            Get started with FeatureDeck today
           </p>
         </div>
 

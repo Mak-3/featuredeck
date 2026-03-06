@@ -265,7 +265,7 @@ FeatureDeck.setUser(null);`}
                 <div>
                   <h3 className="text-xl font-medium mb-3">Theme Customization</h3>
                   <p className="text-muted mb-4">
-                    Customize colors, typography, spacing, and more to match your app's design.
+                    {"Customize colors, typography, spacing, and more to match your app's design."}
                   </p>
                   <CodeBlock
                     id="theme"
@@ -578,7 +578,7 @@ const currentUser = FeatureDeck.getUser();`}
               </p>
               <ul className="space-y-2 text-muted">
                 <li>
-                  📧 Email: <a href="mailto:support@FeatureDeck.com" className="text-accent hover:opacity-80 transition-opacity">support@FeatureDeck.com</a>
+                  📧 Email: <a href="mailto:support@featuredeck.in" className="text-accent hover:opacity-80 transition-opacity">support@featuredeck.in</a>
                 </li>
                 <li>
                   💬 GitHub: <a href="https://github.com/FeatureDeck/FeatureDeck-rn" className="text-accent hover:opacity-80 transition-opacity">github.com/FeatureDeck/FeatureDeck-rn</a>

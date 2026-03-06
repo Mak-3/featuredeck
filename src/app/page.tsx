@@ -1,8 +1,4 @@
-"use client";
-
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { supabase } from "@/lib/supabase";
+import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import HowItWorks from "@/components/HowItWorks";
@@ -13,45 +9,42 @@ import FAQ from "@/components/FAQ";
 import CTA from "@/components/CTA";
 import Footer from "@/components/Footer";
 
+export const metadata: Metadata = {
+  title: "FeatureDeck - Feature Feedback for React Native",
+  description:
+    "Collect feature requests, let users vote, and ship what matters. The feedback tool built natively for React Native apps.",
+  alternates: {
+    canonical: "/",
+  },
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "FeatureDeck",
+  applicationCategory: "DeveloperApplication",
+  operatingSystem: "Web, iOS, Android",
+  description:
+    "Collect feature requests, let users vote, and ship what matters. Built natively for React Native.",
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "USD",
+  },
+  aggregateRating: {
+    "@type": "AggregateRating",
+    ratingValue: "4.8",
+    ratingCount: "50",
+  },
+};
+
 export default function Home() {
-  const [loading, setLoading] = useState(true);
-  const router = useRouter();
-
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const { data: { user }, error } = await supabase.auth.getUser();
-        
-        // If user is logged in and email is confirmed, redirect to dashboard
-        if (!error && user && user.email_confirmed_at) {
-          router.push("/dashboard");
-          return;
-        }
-      } catch (err) {
-        // If there's an error, just continue showing the home page
-        console.error("Auth check error:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    checkAuth();
-  }, [router]);
-
-  // Show loading state while checking auth
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-8 h-8 border-2 border-accent border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-muted text-sm">Loading...</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <main className="min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Header />
       <Hero />
       <HowItWorks />

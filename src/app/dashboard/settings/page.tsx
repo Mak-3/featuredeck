@@ -12,11 +12,13 @@ export default function SettingsPage() {
   const [deleting, setDeleting] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
-  const [projectName, setProjectName] = useState("test");
+  const [selectedProjectId, setSelectedProjectId] = useState<string>("");
+  const [projectName, setProjectName] = useState("");
   const [apiKey, setApiKey] = useState<string | null>(null);
-  const [apiKeyVisible, setApiKeyVisible] = useState(false);
+  const [apiKeyCreatedAt, setApiKeyCreatedAt] = useState<string | null>(null);
   const [apiKeyLoading, setApiKeyLoading] = useState(false);
   const [regenerating, setRegenerating] = useState(false);
+  const [newlyGeneratedKey, setNewlyGeneratedKey] = useState<string | null>(null);
   const router = useRouter();
 
   const getAuthToken = async () => {
@@ -24,25 +26,26 @@ export default function SettingsPage() {
     return session?.access_token || null;
   };
 
-  const fetchApiKey = useCallback(async () => {
+  const fetchApiKey = useCallback(async (projectId: string) => {
+    if (!projectId) return;
     setApiKeyLoading(true);
     try {
       const token = await getAuthToken();
       if (!token) return;
 
-      const response = await fetch('/api/api-keys', {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
+      const response = await fetch(`/api/api-keys?project_id=${projectId}`, {
+        headers: { 'Authorization': `Bearer ${token}` },
       });
 
       if (!response.ok) throw new Error('Failed to fetch API key');
 
       const result = await response.json();
       if (result.data?.hasKey) {
-        setApiKey(result.data.apiKey); // This will be masked
+        setApiKey(result.data.apiKey);
+        setApiKeyCreatedAt(result.data.createdAt || null);
       } else {
         setApiKey(null);
+        setApiKeyCreatedAt(null);
       }
     } catch (err: any) {
       console.error('Error fetching API key:', err);
@@ -51,25 +54,52 @@ export default function SettingsPage() {
     }
   }, []);
 
+  const fetchProjectName = useCallback(async (projectId: string) => {
+    if (!projectId) return;
+    try {
+      const token = await getAuthToken();
+      if (!token) return;
+
+      const response = await fetch(`/api/projects/${projectId}`, {
+        headers: { 'Authorization': `Bearer ${token}` },
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        setProjectName(result.data?.name || "");
+      }
+    } catch {
+      // ignore
+    }
+  }, []);
+
   useEffect(() => {
     const checkUser = async () => {
       try {
         const { data: { user }, error } = await supabase.auth.getUser();
-        
+
         if (error || !user) {
           router.push("/login");
           return;
         }
-        
+
         if (!user.email_confirmed_at) {
           await supabase.auth.signOut();
           router.push(`/confirm-email?email=${encodeURIComponent(user.email || "")}`);
           return;
         }
-        
+
         setUser(user);
-        await fetchApiKey();
-      } catch (err) {
+
+        const storedProjectId = localStorage.getItem("selectedProjectId") || "";
+        setSelectedProjectId(storedProjectId);
+        if (storedProjectId) {
+          await Promise.all([
+            fetchApiKey(storedProjectId),
+            fetchProjectName(storedProjectId),
+          ]);
+        }
+      } catch {
         router.push("/login");
       } finally {
         setLoading(false);
@@ -77,40 +107,29 @@ export default function SettingsPage() {
     };
 
     checkUser();
-  }, [router, fetchApiKey]);
+  }, [router, fetchApiKey, fetchProjectName]);
 
-  const handleShowApiKey = async () => {
-    if (apiKeyVisible) {
-      setApiKeyVisible(false);
-      await fetchApiKey(); // Reset to masked
+  useEffect(() => {
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === "selectedProjectId" && e.newValue) {
+        setSelectedProjectId(e.newValue);
+        setNewlyGeneratedKey(null);
+        fetchApiKey(e.newValue);
+        fetchProjectName(e.newValue);
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, [fetchApiKey, fetchProjectName]);
+
+  const handleRegenerateApiKey = async () => {
+    if (!selectedProjectId) {
+      setError("No project selected. Select a project from the sidebar first.");
       return;
     }
 
-    setApiKeyLoading(true);
-    try {
-      const token = await getAuthToken();
-      if (!token) throw new Error('Not authenticated');
-
-      const response = await fetch('/api/api-keys/show', {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      });
-
-      if (!response.ok) throw new Error('Failed to fetch API key');
-
-      const result = await response.json();
-      setApiKey(result.data.apiKey);
-      setApiKeyVisible(true);
-    } catch (err: any) {
-      setError(err.message || 'Failed to show API key');
-    } finally {
-      setApiKeyLoading(false);
-    }
-  };
-
-  const handleRegenerateApiKey = async () => {
-    if (!confirm("Are you sure you want to regenerate your API key? The old key will no longer work.")) {
+    if (!confirm("Are you sure you want to regenerate your API key? The old key will stop working immediately.")) {
       return;
     }
 
@@ -120,23 +139,25 @@ export default function SettingsPage() {
 
     try {
       const token = await getAuthToken();
-      if (!token) throw new Error('Not authenticated');
+      if (!token) throw new Error("Not authenticated");
 
-      const response = await fetch('/api/api-keys/regenerate', {
-        method: 'POST',
+      const response = await fetch("/api/api-keys/regenerate", {
+        method: "POST",
         headers: {
-          'Authorization': `Bearer ${token}`,
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json",
         },
+        body: JSON.stringify({ project_id: selectedProjectId }),
       });
 
-      if (!response.ok) throw new Error('Failed to regenerate API key');
+      if (!response.ok) throw new Error("Failed to regenerate API key");
 
       const result = await response.json();
-      setApiKey(result.data.apiKey);
-      setApiKeyVisible(true);
-      setSuccess('API key regenerated successfully');
+      setNewlyGeneratedKey(result.data.apiKey);
+      setApiKey(null);
+      setSuccess("API key regenerated. Copy it now — it won't be shown again.");
     } catch (err: any) {
-      setError(err.message || 'Failed to regenerate API key');
+      setError(err.message || "Failed to regenerate API key");
     } finally {
       setRegenerating(false);
     }
@@ -153,6 +174,11 @@ export default function SettingsPage() {
   };
 
   const handleDeleteProject = async () => {
+    if (!selectedProjectId) {
+      setError("No project selected.");
+      return;
+    }
+
     if (!confirm("Are you sure you want to delete this project? This action cannot be undone.")) {
       return;
     }
@@ -162,7 +188,30 @@ export default function SettingsPage() {
     setSuccess(null);
 
     try {
+      const token = await getAuthToken();
+      if (!token) throw new Error("Not authenticated");
+
+      const response = await fetch(`/api/projects/${selectedProjectId}`, {
+        method: "DELETE",
+        headers: { "Authorization": `Bearer ${token}` },
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || "Failed to delete project");
+      }
+
       setSuccess("Project deleted successfully");
+      localStorage.removeItem("selectedProjectId");
+      setSelectedProjectId("");
+      setProjectName("");
+      setApiKey(null);
+      setNewlyGeneratedKey(null);
+
+      window.dispatchEvent(new StorageEvent("storage", {
+        key: "selectedProjectId",
+        newValue: "",
+      }));
     } catch (err: any) {
       setError(err.message || "Failed to delete project");
     } finally {
@@ -184,17 +233,9 @@ export default function SettingsPage() {
     setSuccess(null);
 
     try {
-      const { error } = await supabase.auth.admin.deleteUser(user.id);
-      if (error) throw error;
-      
-      await supabase.auth.signOut();
-      router.push("/");
+      setError("Account deletion requires server-side processing. Please contact support.");
     } catch (err: any) {
-      if (err.message?.includes("admin")) {
-        setError("Account deletion requires admin access. Please contact support.");
-      } else {
-        setError(err.message || "Failed to delete account");
-      }
+      setError(err.message || "Failed to delete account");
     } finally {
       setDeleting(null);
     }
@@ -237,12 +278,35 @@ export default function SettingsPage() {
               </motion.div>
             )}
 
+            {!selectedProjectId && (
+              <div className="p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-md text-yellow-700 dark:text-yellow-400 text-sm">
+                No project selected. Create or select a project from the sidebar.
+              </div>
+            )}
+
+            {/* Project Name */}
             <button
               onClick={() => {
                 const newName = prompt("Enter project name:", projectName);
-                if (newName) setProjectName(newName);
+                if (newName && selectedProjectId) {
+                  setProjectName(newName);
+                  (async () => {
+                    const token = await getAuthToken();
+                    if (token) {
+                      await fetch(`/api/projects/${selectedProjectId}`, {
+                        method: "PATCH",
+                        headers: {
+                          "Authorization": `Bearer ${token}`,
+                          "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ name: newName }),
+                      });
+                    }
+                  })();
+                }
               }}
-              className="w-full bg-background border border-border rounded-lg p-4 flex items-center gap-4 hover:bg-surface transition-colors"
+              disabled={!selectedProjectId}
+              className="w-full bg-background border border-border rounded-lg p-4 flex items-center gap-4 hover:bg-surface transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <div className="w-10 h-10 bg-surface rounded-full flex items-center justify-center flex-shrink-0">
                 <svg className="w-5 h-5 text-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -251,13 +315,14 @@ export default function SettingsPage() {
               </div>
               <div className="flex-1 text-left">
                 <p className="text-sm font-medium text-foreground">Project name</p>
-                <p className="text-xs text-muted mt-0.5">{projectName}</p>
+                <p className="text-xs text-muted mt-0.5">{projectName || "—"}</p>
               </div>
               <svg className="w-5 h-5 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
             </button>
 
+            {/* API Key */}
             <div className="w-full bg-background border border-border rounded-lg p-4">
               <div className="flex items-center gap-4 mb-3">
                 <div className="w-10 h-10 bg-surface rounded-full flex items-center justify-center flex-shrink-0">
@@ -267,74 +332,71 @@ export default function SettingsPage() {
                 </div>
                 <div className="flex-1">
                   <p className="text-sm font-medium text-foreground">API Key</p>
-                  <p className="text-xs text-muted mt-0.5">Use this key to authenticate API requests</p>
+                  <p className="text-xs text-muted mt-0.5">
+                    {selectedProjectId
+                      ? "Use this key to authenticate SDK requests for this project"
+                      : "Select a project to manage its API key"}
+                  </p>
                 </div>
               </div>
-              
+
               {apiKeyLoading ? (
                 <div className="flex items-center justify-center py-2">
                   <div className="w-4 h-4 border-2 border-accent border-t-transparent rounded-full animate-spin"></div>
                 </div>
-              ) : apiKey ? (
+              ) : !selectedProjectId ? null : (
                 <div className="mt-3 space-y-2">
-                  <div className="flex items-center gap-2 p-2 bg-surface rounded border border-border">
-                    <code className="flex-1 text-xs font-mono text-foreground break-all">
-                      {apiKey}
-                    </code>
-                    <button
-                      onClick={handleShowApiKey}
-                      disabled={apiKeyLoading}
-                      className="p-1.5 hover:bg-background rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                      title={apiKeyVisible ? 'Hide API key' : 'Show API key'}
-                    >
-                      {apiKeyVisible ? (
-                        <svg className="w-4 h-4 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
-                        </svg>
-                      ) : (
-                        <svg className="w-4 h-4 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                        </svg>
-                      )}
-                    </button>
-                  </div>
-                  <div className="flex gap-2">
-                    <button
-                      onClick={async () => {
-                        if (apiKeyVisible && apiKey) {
-                          await navigator.clipboard.writeText(apiKey);
-                          setSuccess('API key copied to clipboard');
-                          setTimeout(() => setSuccess(null), 2000);
-                        }
-                      }}
-                      disabled={!apiKeyVisible || apiKeyLoading}
-                      className="flex-1 px-3 py-1.5 text-xs font-medium bg-surface border border-border rounded hover:bg-background transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      Copy
-                    </button>
-                    <button
-                      onClick={handleRegenerateApiKey}
-                      disabled={regenerating || apiKeyLoading}
-                      className="flex-1 px-3 py-1.5 text-xs font-medium bg-surface border border-border rounded hover:bg-background transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      {regenerating ? 'Regenerating...' : 'Regenerate'}
-                    </button>
-                  </div>
-                </div>
-              ) : (
-                <div className="mt-3">
+                  {/* Show newly generated key (plaintext, one-time view) */}
+                  {newlyGeneratedKey && (
+                    <div className="p-3 bg-green-500/10 border border-green-500/20 rounded-md space-y-2">
+                      <p className="text-xs font-medium text-green-700 dark:text-green-400">
+                        Copy this key now. It will not be shown again.
+                      </p>
+                      <div className="flex items-center gap-2 p-2 bg-surface rounded border border-border">
+                        <code className="flex-1 text-xs font-mono text-foreground break-all">
+                          {newlyGeneratedKey}
+                        </code>
+                        <button
+                          onClick={async () => {
+                            await navigator.clipboard.writeText(newlyGeneratedKey);
+                            setSuccess("API key copied to clipboard");
+                            setTimeout(() => setSuccess(null), 2000);
+                          }}
+                          className="px-2 py-1 text-xs font-medium bg-background border border-border rounded hover:bg-surface transition-colors"
+                        >
+                          Copy
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Masked key display */}
+                  {apiKey && !newlyGeneratedKey && (
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2 p-2 bg-surface rounded border border-border">
+                        <code className="flex-1 text-xs font-mono text-muted break-all">
+                          {apiKey}
+                        </code>
+                      </div>
+                      <p className="text-xs text-muted">
+                        The full key was shown once at creation. Regenerate to get a new one.
+                        {apiKeyCreatedAt && <> Created {new Date(apiKeyCreatedAt).toLocaleDateString()}.</>}
+                      </p>
+                    </div>
+                  )}
+
                   <button
                     onClick={handleRegenerateApiKey}
-                    disabled={regenerating}
-                    className="w-full px-3 py-2 text-xs font-medium bg-accent text-white rounded hover:bg-accent/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    disabled={regenerating || apiKeyLoading}
+                    className="w-full px-3 py-1.5 text-xs font-medium bg-surface border border-border rounded hover:bg-background transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    {regenerating ? 'Generating...' : 'Generate API Key'}
+                    {regenerating ? "Regenerating..." : apiKey ? "Regenerate API Key" : "Generate API Key"}
                   </button>
                 </div>
               )}
             </div>
 
+            {/* Logout */}
             <button
               onClick={handleLogout}
               className="w-full bg-background border border-border rounded-lg p-4 flex items-center gap-4 hover:bg-surface transition-colors"
@@ -353,12 +415,13 @@ export default function SettingsPage() {
               </svg>
             </button>
 
+            {/* Danger Zone */}
             <div className="pt-4">
               <h2 className="text-sm font-medium text-foreground mb-4">Danger Zone</h2>
               <div className="space-y-3">
                 <button
                   onClick={handleDeleteProject}
-                  disabled={deleting !== null}
+                  disabled={deleting !== null || !selectedProjectId}
                   className="w-full bg-background border border-border rounded-lg p-4 flex items-center gap-4 hover:bg-surface transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <div className="w-10 h-10 bg-surface rounded-full flex items-center justify-center flex-shrink-0">
@@ -403,4 +466,3 @@ export default function SettingsPage() {
     </div>
   );
 }
-

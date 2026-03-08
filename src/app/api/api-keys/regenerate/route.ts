@@ -1,39 +1,78 @@
 import { NextRequest, NextResponse } from 'next/server';
 import crypto from 'crypto';
 import { supabaseAdmin } from '@/lib/supabase-server';
-import { authenticate, handleError } from '@/lib/api-helpers';
+import { authenticate, handleError, AppError } from '@/lib/api-helpers';
 
-// Generate a secure API key using crypto.randomBytes
-const generateApiKey = () => {
-  // Generate 32 random bytes and convert to hex string
-  const randomBytes = crypto.randomBytes(32);
-  return `pk_${randomBytes.toString('hex')}`;
-};
+function generateApiKey(): string {
+  return `pk_${crypto.randomBytes(32).toString('hex')}`;
+}
 
-// POST /api/api-keys/regenerate - Generate or regenerate API key
+// POST /api/api-keys/regenerate - Delete old key and create new one for a project
 export async function POST(request: NextRequest) {
   try {
     const authResult = await authenticate(request);
     if ('error' in authResult) return authResult.error;
     const { user } = authResult;
 
+    const body = await request.json();
+    const projectId = body.project_id;
+
+    if (!projectId) {
+      return NextResponse.json(
+        { success: false, error: 'project_id is required' },
+        { status: 400 }
+      );
+    }
+
+    const { data: orgMembers } = await supabaseAdmin
+      .from('org_members')
+      .select('org_id')
+      .eq('user_id', user.id);
+
+    if (!orgMembers || orgMembers.length === 0) {
+      throw new AppError('Project not found', 404);
+    }
+
+    const orgIds = orgMembers.map(om => om.org_id);
+
+    const { data: project } = await supabaseAdmin
+      .from('projects')
+      .select('id, org_id')
+      .eq('id', projectId)
+      .in('org_id', orgIds)
+      .single();
+
+    if (!project) {
+      throw new AppError('Project not found', 404);
+    }
+
+    // Delete all existing API keys for this project
+    await supabaseAdmin
+      .from('api_keys')
+      .delete()
+      .eq('project_id', projectId)
+      .eq('org_id', project.org_id);
+
+    // Generate and store new key
     const newApiKey = generateApiKey();
+    const keyHash = crypto.createHash('sha256').update(newApiKey).digest('hex');
+    const maskedDisplay = `pk_${'•'.repeat(56)}${newApiKey.slice(-8)}`;
 
-    // Update user metadata with the new API key
-    const { data, error } = await supabaseAdmin.auth.admin.updateUserById(
-      user.id,
-      {
-        user_metadata: {
-          api_key: newApiKey
-        }
-      }
-    );
+    const { error: insertError } = await supabaseAdmin
+      .from('api_keys')
+      .insert({
+        org_id: project.org_id,
+        project_id: projectId,
+        name: maskedDisplay,
+        key_hash: keyHash,
+        scopes: ['read', 'write'],
+        status: 'active',
+      });
 
-    if (error) throw error;
+    if (insertError) throw insertError;
 
-    // Return the full key only once (for display after generation)
-    return NextResponse.json({ 
-      data: { 
+    return NextResponse.json({
+      data: {
         apiKey: newApiKey,
         message: 'API key generated successfully'
       } 
@@ -42,4 +81,3 @@ export async function POST(request: NextRequest) {
     return handleError(error);
   }
 }
-

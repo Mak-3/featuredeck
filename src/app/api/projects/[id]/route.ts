@@ -1,13 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { supabase } from '@/lib/supabase-server';
+import { supabaseAdmin } from '@/lib/supabase-server';
 import { authenticate, handleError, AppError } from '@/lib/api-helpers';
 
 const projectSchema = z.object({
   name: z.string().min(2).max(100),
-  description: z.string().max(500).optional(),
-  website_url: z.string().url().optional(),
-  is_public: z.boolean().default(true)
+  slug: z.string().min(2).max(100).optional(),
+  status: z.string().optional(),
 });
 
 // GET /api/projects/[id] - Get project by ID
@@ -22,11 +21,24 @@ export async function GET(
 
     const { id } = await params;
 
-    const { data, error } = await supabase
+    // Get user's organisations
+    // Use admin client to bypass RLS and avoid infinite recursion
+    const { data: orgMembers } = await supabaseAdmin
+      .from('org_members')
+      .select('org_id')
+      .eq('user_id', user.id);
+
+    if (!orgMembers || orgMembers.length === 0) {
+      throw new AppError('Project not found', 404);
+    }
+
+    const orgIds = orgMembers.map(om => om.org_id);
+
+    const { data, error } = await supabaseAdmin
       .from('projects')
-      .select('*, feedback(*)')
+      .select('*, feature_requests(*)')
       .eq('id', id)
-      .eq('user_id', user.id)
+      .in('org_id', orgIds)
       .single();
 
     if (error) throw error;
@@ -52,11 +64,24 @@ export async function PATCH(
     const body = await request.json();
     const updates = projectSchema.partial().parse(body);
 
-    const { data, error } = await supabase
+    // Get user's organisations
+    // Use admin client to bypass RLS and avoid infinite recursion
+    const { data: orgMembers } = await supabaseAdmin
+      .from('org_members')
+      .select('org_id')
+      .eq('user_id', user.id);
+
+    if (!orgMembers || orgMembers.length === 0) {
+      throw new AppError('Project not found', 404);
+    }
+
+    const orgIds = orgMembers.map(om => om.org_id);
+
+    const { data, error } = await supabaseAdmin
       .from('projects')
       .update(updates)
       .eq('id', id)
-      .eq('user_id', user.id)
+      .in('org_id', orgIds)
       .select()
       .single();
 
@@ -81,11 +106,31 @@ export async function DELETE(
 
     const { id } = await params;
 
-    const { error } = await supabase
+    // Get user's organisations
+    // Use admin client to bypass RLS and avoid infinite recursion
+    const { data: orgMembers } = await supabaseAdmin
+      .from('org_members')
+      .select('org_id')
+      .eq('user_id', user.id);
+
+    if (!orgMembers || orgMembers.length === 0) {
+      throw new AppError('Project not found', 404);
+    }
+
+    const orgIds = orgMembers.map(om => om.org_id);
+
+    // Delete associated API keys first (FK constraint)
+    await supabaseAdmin
+      .from('api_keys')
+      .delete()
+      .eq('project_id', id)
+      .in('org_id', orgIds);
+
+    const { error } = await supabaseAdmin
       .from('projects')
       .delete()
       .eq('id', id)
-      .eq('user_id', user.id);
+      .in('org_id', orgIds);
 
     if (error) throw error;
 

@@ -68,6 +68,7 @@ export function handleError(error: any): NextResponse {
   if (error.name === 'ZodError') {
     return NextResponse.json(
       {
+        success: false,
         error: 'Validation error',
         details: error.errors.map((e: any) => ({
           field: e.path.join('.'),
@@ -82,6 +83,7 @@ export function handleError(error: any): NextResponse {
   if (error.code && error.message && error.details) {
     return NextResponse.json(
       {
+        success: false,
         error: error.message,
         code: error.code
       },
@@ -92,7 +94,7 @@ export function handleError(error: any): NextResponse {
   // AppError
   if (error instanceof AppError) {
     return NextResponse.json(
-      { error: error.message },
+      { success: false, error: error.message },
       { status: error.statusCode }
     );
   }
@@ -103,6 +105,7 @@ export function handleError(error: any): NextResponse {
 
   return NextResponse.json(
     {
+      success: false,
       error: message,
       ...(process.env.NODE_ENV === 'development' && { stack: error.stack })
     },

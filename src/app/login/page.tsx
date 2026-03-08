@@ -63,15 +63,14 @@ function LoginPageContent() {
         router.refresh();
       }
     } catch (err: any) {
-      if (err.message?.includes("Invalid login credentials") || 
-          err.message?.includes("Invalid credentials") ||
-          err.message?.includes("Email not confirmed") ||
-          err.code === "invalid_credentials") {
-        if (err.message?.includes("Email not confirmed")) {
-          setError("Please confirm your email address. Check your inbox for the confirmation link.");
-        } else {
-          setError("User doesn't exist. Please create an account first.");
-        }
+      if (err.message?.includes("Email not confirmed")) {
+        setError("Please confirm your email address. Check your inbox for the confirmation link.");
+      } else if (
+        err.message?.includes("Invalid login credentials") ||
+        err.message?.includes("Invalid credentials") ||
+        err.code === "invalid_credentials"
+      ) {
+        setError("Invalid email or password. Please try again.");
       } else {
         setError(err.message || "Failed to sign in");
       }

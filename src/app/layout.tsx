@@ -86,8 +86,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${spaceGrotesk.variable} ${fraunces.variable}`}>
-      <body className="font-sans antialiased">
+    <html lang="en" className={`${spaceGrotesk.variable} ${fraunces.variable}`} suppressHydrationWarning>
+      <body className="font-sans antialiased" suppressHydrationWarning>
         {children}
         <Analytics />
       </body>

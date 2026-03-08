@@ -1,33 +1,58 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
-import { supabase } from '@/lib/supabase-server';
-import { optionalAuth, handleError, AppError } from '@/lib/api-helpers';
+import { supabaseAdmin } from '@/lib/supabase-server';
+import { authenticate, handleError } from '@/lib/api-helpers';
 
-const feedbackSchema = z.object({
-  title: z.string().min(3).max(200),
-  description: z.string().min(10).max(2000),
-  category: z.enum(['bug', 'feature', 'improvement', 'other']).optional(),
-  project_id: z.string().uuid().optional()
-});
-
-// GET /api/feedback - Get all feedback
+// GET /api/feedback - Dashboard: list feature requests for user's projects
 export async function GET(request: NextRequest) {
   try {
-    const { user } = await optionalAuth(request);
+    const authResult = await authenticate(request);
+    if ('error' in authResult) return authResult.error;
+    const { user } = authResult;
+
     const { searchParams } = new URL(request.url);
-    
     const project_id = searchParams.get('project_id');
-    const category = searchParams.get('category');
+    const priority = searchParams.get('priority');
     const status = searchParams.get('status');
-    const sort = searchParams.get('sort') || 'votes';
+    const sort = searchParams.get('sort') || 'created_at';
     const order = searchParams.get('order') || 'desc';
 
-    let query = supabase
-      .from('feedback')
-      .select('*, votes:feedback_votes(count)');
+    const { data: orgMembers } = await supabaseAdmin
+      .from('org_members')
+      .select('org_id')
+      .eq('user_id', user.id);
 
-    if (project_id) query = query.eq('project_id', project_id);
-    if (category) query = query.eq('category', category);
+    if (!orgMembers || orgMembers.length === 0) {
+      return NextResponse.json({ data: [] });
+    }
+
+    const orgIds = orgMembers.map(om => om.org_id);
+
+    const { data: projects } = await supabaseAdmin
+      .from('projects')
+      .select('id')
+      .in('org_id', orgIds)
+      .eq('status', 'active');
+
+    const accessibleProjectIds = projects?.map(p => p.id) || [];
+
+    if (accessibleProjectIds.length === 0) {
+      return NextResponse.json({ data: [] });
+    }
+
+    let query = supabaseAdmin
+      .from('feature_requests')
+      .select('*, created_by_end_user:end_users(id, external_user_id, username, email), votes:feature_votes(count)');
+
+    if (project_id) {
+      if (!accessibleProjectIds.includes(project_id)) {
+        return NextResponse.json({ data: [] });
+      }
+      query = query.eq('project_id', project_id);
+    } else {
+      query = query.in('project_id', accessibleProjectIds);
+    }
+
+    if (priority) query = query.eq('priority', priority);
     if (status) query = query.eq('status', status);
 
     const { data, error } = await query.order(sort, { ascending: order === 'asc' });
@@ -39,29 +64,3 @@ export async function GET(request: NextRequest) {
     return handleError(error);
   }
 }
-
-// POST /api/feedback - Create feedback
-export async function POST(request: NextRequest) {
-  try {
-    const { user } = await optionalAuth(request);
-    const body = await request.json();
-    const validated = feedbackSchema.parse(body);
-
-    const { data, error } = await supabase
-      .from('feedback')
-      .insert({
-        ...validated,
-        user_id: user?.id || null,
-        status: 'open'
-      })
-      .select()
-      .single();
-
-    if (error) throw error;
-
-    return NextResponse.json({ data }, { status: 201 });
-  } catch (error) {
-    return handleError(error);
-  }
-}
-

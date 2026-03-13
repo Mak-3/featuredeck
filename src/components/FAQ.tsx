@@ -15,11 +15,6 @@ const faqs = [
       "Each user gets one vote per feature request. They can FeatureDeck ideas they care about, and the most-wanted features naturally rise to the top. You see real demand at a glance.",
   },
   {
-    question: "When do users get notified?",
-    answer:
-      "Users who voted on a feature receive notifications when its status changes—whether it's marked as planned, in progress, or shipped. They stay in the loop without you lifting a finger.",
-  },
-  {
     question: "Can users see what's coming next?",
     answer:
       "Yes. You can share your roadmap publicly so users see what features are planned and in development. It builds anticipation and shows you're listening.",
@@ -27,7 +22,7 @@ const faqs = [
   {
     question: "How long does setup take?",
     answer:
-      "About 5 minutes. Install the package, add your project key, and you're ready to collect feedback. Full docs available to guide you through.",
+      "Most developers integrate FeaturedDeck in under 2 minutes. Install the SDK, initialize it with your API key, and you're ready to collect feedback. If you're using AI coding tools, setup can often take less than 30 seconds."
   },
   {
     question: "Does it work with Expo?",

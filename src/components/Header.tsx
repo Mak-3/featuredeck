@@ -67,13 +67,13 @@ export default function Header() {
 
         <div className="hidden md:flex items-center gap-8">
           <Link
-            href="#how-it-works"
+            href="/#how-it-works"
             className="text-muted hover:text-foreground transition-colors text-[13px]"
           >
             How it works
           </Link>
           <Link
-            href="#pricing"
+            href="/#pricing"
             className="text-muted hover:text-foreground transition-colors text-[13px]"
           >
             Pricing

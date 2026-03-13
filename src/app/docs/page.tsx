@@ -132,30 +132,73 @@ export default function DocsPage() {
             <section>
               <h2 className="text-3xl font-medium mb-4">Installation</h2>
               <p className="text-muted mb-6">
-                Install the FeaturedDeck React Native SDK using npm or yarn.
+                Install the FeaturedDeck React Native SDK using your preferred
+                package manager.
               </p>
-              <CodeBlock
-                id="install"
-                code={`npm install @featuredeck/react-native
-# or
-yarn add @featuredeck/react-native`}
-                language="bash"
-              />
-              <p className="text-sm text-muted mt-4">
-                <strong>Peer Dependencies:</strong> Make sure you have{" "}
-                <code className="bg-surface px-1.5 py-0.5 rounded text-xs">
-                  react
-                </code>
-                ,{" "}
-                <code className="bg-surface px-1.5 py-0.5 rounded text-xs">
-                  react-native
-                </code>
-                , and{" "}
-                <code className="bg-surface px-1.5 py-0.5 rounded text-xs">
-                  zustand
-                </code>{" "}
-                installed.
-              </p>
+
+              <div className="space-y-6">
+                {/* npm */}
+                <div>
+                  <p className="text-sm text-muted mb-2 font-medium">
+                    Using npm
+                  </p>
+                  <CodeBlock
+                    id="install-npm"
+                    code={`npm install @featuredeck/react-native`}
+                    language="bash"
+                  />
+                </div>
+
+                {/* yarn */}
+                <div>
+                  <p className="text-sm text-muted mb-2 font-medium">
+                    Using yarn
+                  </p>
+                  <CodeBlock
+                    id="install-yarn"
+                    code={`yarn add @featuredeck/react-native`}
+                    language="bash"
+                  />
+                </div>
+
+                {/* pnpm */}
+                <div>
+                  <p className="text-sm text-muted mb-2 font-medium">
+                    Using pnpm
+                  </p>
+                  <CodeBlock
+                    id="install-pnpm"
+                    code={`pnpm add @featuredeck/react-native`}
+                    language="bash"
+                  />
+                </div>
+              </div>
+
+              {/* Peer Dependencies */}
+              <div className="mt-8">
+                <h3 className="text-xl font-medium mb-3">
+                  Install Peer Dependency
+                </h3>
+
+                <p className="text-muted mb-4">
+                  FeaturedDeck uses{" "}
+                  <code className="bg-surface px-1.5 py-0.5 rounded text-xs">
+                    zustand
+                  </code>{" "}
+                  for internal state management. If your project does not
+                  already include it, install it using:
+                </p>
+
+                <CodeBlock
+                  id="install-zustand"
+                  code={`npm install zustand`}
+                  language="bash"
+                />
+
+                <p className="text-xs text-muted mt-3">
+                  If your project already uses Zustand, you can skip this step.
+                </p>
+              </div>
             </section>
 
             {/* Quick Start */}

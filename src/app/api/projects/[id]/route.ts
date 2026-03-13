@@ -119,7 +119,24 @@ export async function DELETE(
 
     const orgIds = orgMembers.map(om => om.org_id);
 
-    // Delete associated API keys first (FK constraint)
+    const { data: featureRequests } = await supabaseAdmin
+      .from('feature_requests')
+      .select('id')
+      .eq('project_id', id);
+
+    if (featureRequests && featureRequests.length > 0) {
+      const featureIds = featureRequests.map(f => f.id);
+      await supabaseAdmin
+        .from('feature_votes')
+        .delete()
+        .in('feature_request_id', featureIds);
+
+      await supabaseAdmin
+        .from('feature_requests')
+        .delete()
+        .eq('project_id', id);
+    }
+
     await supabaseAdmin
       .from('api_keys')
       .delete()

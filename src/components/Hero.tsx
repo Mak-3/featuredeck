@@ -43,7 +43,7 @@ export default function Hero() {
             className="flex flex-wrap items-center gap-3"
           >
             <a
-              href="#"
+              href="/register"
               className="bg-foreground text-background px-5 py-2.5 rounded-md text-[14px] font-medium hover:opacity-80 transition-opacity"
             >
               Start free

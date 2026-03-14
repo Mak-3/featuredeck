@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 
 interface Project {
   id: string;
@@ -172,20 +173,13 @@ export default function Sidebar() {
       }`}>
       <div className="p-6 border-b border-border flex items-center justify-between">
         <Link href="/dashboard" className="flex items-center gap-2.5" onClick={() => setIsMobileMenuOpen(false)}>
-          <div className="w-7 h-7 bg-gradient-to-br from-purple-500 to-blue-500 rounded-md flex items-center justify-center">
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              className="text-white"
-            >
-              <path
-                d="M12 4L14.5 9.5L20 12L14.5 14.5L12 20L9.5 14.5L4 12L9.5 9.5L12 4Z"
-                fill="currentColor"
-              />
-            </svg>
-          </div>
+        <Image
+            src="/logo.png"
+            alt="FeatureDeck logo"
+            width={28}
+            height={28}
+            className="rounded-md"
+          />
           <span className="font-medium text-[15px] text-foreground">FeatureDeck</span>
         </Link>
         <button

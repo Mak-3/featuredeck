@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 
@@ -48,20 +49,13 @@ export default function Header() {
     >
       <nav className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2.5">
-          <div className="w-7 h-7 bg-accent rounded-md flex items-center justify-center">
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              className="text-white"
-            >
-              <path
-                d="M12 4L14.5 9.5L20 12L14.5 14.5L12 20L9.5 14.5L4 12L9.5 9.5L12 4Z"
-                fill="currentColor"
-              />
-            </svg>
-          </div>
+          <Image
+            src="/logo.png"
+            alt="FeatureDeck logo"
+            width={28}
+            height={28}
+            className="rounded-md"
+          />
           <span className="font-medium text-[15px]">FeatureDeck</span>
         </Link>
 

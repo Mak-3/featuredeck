@@ -37,6 +37,9 @@ export const metadata: Metadata = {
     "React Native SDK",
     "user engagement",
   ],
+  icons: {
+    apple: "/apple-touch-icon.png",
+  },
   authors: [{ name: "FeatureDeck" }],
   creator: "FeatureDeck",
   publisher: "FeatureDeck",

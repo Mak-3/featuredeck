@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Footer() {
   return (
@@ -16,20 +17,13 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row items-start justify-between gap-8 mb-12">
           <div className="max-w-xs">
             <Link href="/" className="flex items-center gap-2.5 mb-3">
-              <div className="w-7 h-7 bg-accent rounded-md flex items-center justify-center">
-                <svg
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  className="text-white"
-                >
-                  <path
-                    d="M12 4L14.5 9.5L20 12L14.5 14.5L12 20L9.5 14.5L4 12L9.5 9.5L12 4Z"
-                    fill="currentColor"
-                  />
-                </svg>
-              </div>
+              <Image
+                src="/logo.png"
+                alt="FeatureDeck logo"
+                width={28}
+                height={28}
+                className="rounded-md"
+              />
               <span className="font-medium text-[15px]">FeatureDeck</span>
             </Link>
             <p className="text-[13px] text-muted leading-relaxed">

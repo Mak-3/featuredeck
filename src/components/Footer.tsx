@@ -50,11 +50,11 @@ export default function Footer() {
                     Documentation
                   </Link>
                 </li>
-                <li>
+                {/* <li>
                   <Link href="#" className="hover:text-foreground transition-colors">
                     Changelog
                   </Link>
-                </li>
+                </li> */}
               </ul>
             </div>
 
@@ -86,17 +86,19 @@ export default function Footer() {
             © {new Date().getFullYear()} FeatureDeck
           </p>
           <div className="flex items-center gap-4">
-            <a
-              href="#"
-              className="text-muted hover:text-foreground transition-colors"
-              aria-label="Twitter"
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-              </svg>
+          <a
+            href="https://www.npmjs.com/package/@featuredeck/react-native"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-muted hover:text-foreground transition-colors"
+            aria-label="npm"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M2 8h20v8h-6v-4h-4v4H2z" />
+            </svg>
             </a>
             <a
-              href="#"
+              href="https://github.com/Mak-3/featuredeck-react-native"
               className="text-muted hover:text-foreground transition-colors"
               aria-label="GitHub"
             >

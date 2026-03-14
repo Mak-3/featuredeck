@@ -112,7 +112,7 @@ export default function DocsPage() {
             </Link>
             <h1 className="text-4xl font-medium mb-3">Documentation</h1>
             <p className="text-muted text-lg">
-              Integrate FeaturedDeck into your React Native app in minutes.
+              Integrate FeatureDeck into your React Native app in minutes.
               Collect feature requests, let users vote, view a roadmap, and
               build what matters.
             </p>
@@ -132,7 +132,7 @@ export default function DocsPage() {
             <section>
               <h2 className="text-3xl font-medium mb-4">Installation</h2>
               <p className="text-muted mb-6">
-                Install the FeaturedDeck React Native SDK using your preferred
+                Install the FeatureDeck React Native SDK using your preferred
                 package manager.
               </p>
 
@@ -181,7 +181,7 @@ export default function DocsPage() {
                 </h3>
 
                 <p className="text-muted mb-4">
-                  FeaturedDeck uses{" "}
+                  FeatureDeck uses{" "}
                   <code className="bg-surface px-1.5 py-0.5 rounded text-xs">
                     zustand
                   </code>{" "}
@@ -214,23 +214,23 @@ export default function DocsPage() {
                     1. Initialize the SDK
                   </h3>
                   <p className="text-muted mb-4">
-                    Initialize FeaturedDeck in your app entry point (usually{" "}
+                    Initialize FeatureDeck in your app entry point (usually{" "}
                     <code className="bg-surface px-1.5 py-0.5 rounded text-xs">
                       App.tsx
                     </code>
-                    ). You get your API key from the FeaturedDeck dashboard.
+                    ). You get your API key from the FeatureDeck dashboard.
                   </p>
                   <CodeBlock
                     id="init"
-                    code={`import { FeaturedDeck } from '@featuredeck/react-native';
+                    code={`import { FeatureDeck } from '@featuredeck/react-native';
 
 // Initialize the SDK
-await FeaturedDeck.init({
-  apiKey: 'your-api-key', // Get this from your FeaturedDeck dashboard
+await FeatureDeck.init({
+  apiKey: 'your-api-key', // Get this from your FeatureDeck dashboard
 });
 
 // Identify the current user
-await FeaturedDeck.setUser({
+await FeatureDeck.setUser({
   externalUserId: 'user-123',
   username: 'johndoe',
   email: 'john@example.com',
@@ -245,19 +245,19 @@ await FeaturedDeck.setUser({
                   <p className="text-muted mb-4">
                     Add the{" "}
                     <code className="bg-surface px-1.5 py-0.5 rounded text-xs">
-                      FeaturedDeckProvider
+                      FeatureDeckProvider
                     </code>{" "}
                     to your app root. This renders the feedback board modal.
                   </p>
                   <CodeBlock
                     id="provider"
-                    code={`import { FeaturedDeckProvider } from '@featuredeck/react-native';
+                    code={`import { FeatureDeckProvider } from '@featuredeck/react-native';
 
 export default function App() {
   return (
-    <FeaturedDeckProvider>
+    <FeatureDeckProvider>
       {/* Your app content */}
-    </FeaturedDeckProvider>
+    </FeatureDeckProvider>
   );
 }`}
                   />
@@ -273,12 +273,12 @@ export default function App() {
                   </p>
                   <CodeBlock
                     id="open-board"
-                    code={`import { FeaturedDeck } from '@featuredeck/react-native';
+                    code={`import { FeatureDeck } from '@featuredeck/react-native';
 
 function SettingsScreen() {
   return (
     <View>
-      <TouchableOpacity onPress={() => FeaturedDeck.openFeatureBoard()}>
+      <TouchableOpacity onPress={() => FeatureDeck.openFeatureBoard()}>
         <Text>Feature Requests</Text>
       </TouchableOpacity>
     </View>
@@ -316,7 +316,7 @@ function SettingsScreen() {
                     <li>• View planned, in-progress, and completed items</li>
                     <li>• Grouped by status with clear labels</li>
                     <li>• Pull-to-refresh for latest updates</li>
-                    <li>• Powered by FeaturedDeck branding</li>
+                    <li>• Powered by FeatureDeck branding</li>
                   </ul>
                 </div>
               </div>
@@ -343,19 +343,19 @@ function SettingsScreen() {
                       externalUserId
                     </code>{" "}
                     is required — it links the user in your system to
-                    FeaturedDeck.
+                    FeatureDeck.
                   </p>
                   <CodeBlock
                     id="set-user"
                     code={`// When user logs in
-await FeaturedDeck.setUser({
+await FeatureDeck.setUser({
   externalUserId: 'user-123',  // Required — your app's user ID
   username: 'johndoe',         // Optional
   email: 'john@example.com',   // Optional
 });
 
 // When user logs out
-await FeaturedDeck.setUser(null);`}
+await FeatureDeck.setUser(null);`}
                   />
                 </div>
               </div>
@@ -378,7 +378,7 @@ await FeaturedDeck.setUser(null);`}
                   <CodeBlock
                     id="theme"
                     code={`// Initialize with a custom theme
-await FeaturedDeck.init({
+await FeatureDeck.init({
   apiKey: 'your-api-key',
   theme: {
     colors: {
@@ -391,7 +391,7 @@ await FeaturedDeck.init({
 });
 
 // Or update theme at runtime
-FeaturedDeck.setTheme({
+FeatureDeck.setTheme({
   colors: {
     primary: '#10B981',
   },
@@ -399,8 +399,8 @@ FeaturedDeck.setTheme({
 });
 
 // Quick dark/light mode toggles
-FeaturedDeck.enableDarkMode();
-FeaturedDeck.enableLightMode();`}
+FeatureDeck.enableDarkMode();
+FeatureDeck.enableLightMode();`}
                   />
                 </div>
 
@@ -425,7 +425,7 @@ const customTheme = createThemeFromColor('#E85D04', false);
 // Merge with the default light theme
 const merged = mergeTheme(lightTheme, customTheme);
 
-await FeaturedDeck.init({
+await FeatureDeck.init({
   apiKey: 'your-api-key',
   theme: merged,
 });`}
@@ -441,16 +441,16 @@ await FeaturedDeck.init({
               <div className="space-y-8">
                 <div>
                   <h3 className="text-xl font-medium mb-3">
-                    FeaturedDeck.init(config)
+                    FeatureDeck.init(config)
                   </h3>
                   <p className="text-muted mb-4">
                     Initialize the SDK. Must be called before any other method.
                   </p>
                   <CodeBlock
                     id="api-init"
-                    code={`FeaturedDeck.init(config: FeaturedDeckConfig): Promise<void>
+                    code={`FeatureDeck.init(config: FeatureDeckConfig): Promise<void>
 
-interface FeaturedDeckConfig {
+interface FeatureDeckConfig {
   apiKey: string;            // Your project API key
   theme?: Partial<Theme>;    // Optional custom theme
 }`}
@@ -459,7 +459,7 @@ interface FeaturedDeckConfig {
 
                 <div>
                   <h3 className="text-xl font-medium mb-3">
-                    FeaturedDeck.setUser(user)
+                    FeatureDeck.setUser(user)
                   </h3>
                   <p className="text-muted mb-4">
                     Identify the current end user. Required for voting,
@@ -467,7 +467,7 @@ interface FeaturedDeckConfig {
                   </p>
                   <CodeBlock
                     id="api-set-user"
-                    code={`FeaturedDeck.setUser(user: UserInput | null): Promise<void>
+                    code={`FeatureDeck.setUser(user: UserInput | null): Promise<void>
 
 interface UserInput {
   externalUserId: string;  // Required — your app's user ID
@@ -479,7 +479,7 @@ interface UserInput {
 
                 <div>
                   <h3 className="text-xl font-medium mb-3">
-                    FeaturedDeck.openFeatureBoard()
+                    FeatureDeck.openFeatureBoard()
                   </h3>
                   <p className="text-muted mb-4">
                     Open the feature board modal. Shows the Features and Roadmap
@@ -487,35 +487,35 @@ interface UserInput {
                   </p>
                   <CodeBlock
                     id="api-open"
-                    code={`FeaturedDeck.openFeatureBoard(): void`}
+                    code={`FeatureDeck.openFeatureBoard(): void`}
                   />
                 </div>
 
                 <div>
                   <h3 className="text-xl font-medium mb-3">
-                    FeaturedDeck.close()
+                    FeatureDeck.close()
                   </h3>
                   <p className="text-muted mb-4">
                     Programmatically close the modal.
                   </p>
                   <CodeBlock
                     id="api-close"
-                    code={`FeaturedDeck.close(): void`}
+                    code={`FeatureDeck.close(): void`}
                   />
                 </div>
 
                 <div>
                   <h3 className="text-xl font-medium mb-3">
-                    FeaturedDeck.setTheme(theme)
+                    FeatureDeck.setTheme(theme)
                   </h3>
                   <p className="text-muted mb-4">
                     Update the theme at runtime.
                   </p>
                   <CodeBlock
                     id="api-theme"
-                    code={`FeaturedDeck.setTheme(theme: Partial<Theme>): void
-FeaturedDeck.enableDarkMode(): void
-FeaturedDeck.enableLightMode(): void`}
+                    code={`FeatureDeck.setTheme(theme: Partial<Theme>): void
+FeatureDeck.enableDarkMode(): void
+FeatureDeck.enableLightMode(): void`}
                   />
                 </div>
 
@@ -523,9 +523,9 @@ FeaturedDeck.enableLightMode(): void`}
                   <h3 className="text-xl font-medium mb-3">Utility Methods</h3>
                   <CodeBlock
                     id="api-utils"
-                    code={`FeaturedDeck.isReady(): boolean    // Has init() completed?
-FeaturedDeck.isVisible(): boolean   // Is the modal currently open?
-FeaturedDeck.getUser(): User | null // Get the current user`}
+                    code={`FeatureDeck.isReady(): boolean    // Has init() completed?
+FeatureDeck.isVisible(): boolean   // Is the modal currently open?
+FeatureDeck.getUser(): User | null // Get the current user`}
                   />
                 </div>
               </div>
@@ -543,14 +543,14 @@ FeaturedDeck.getUser(): User | null // Get the current user`}
                 code={`import React, { useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import {
-  FeaturedDeck,
-  FeaturedDeckProvider,
+  FeatureDeck,
+  FeatureDeckProvider,
 } from '@featuredeck/react-native';
 
 async function bootstrap() {
-  await FeaturedDeck.init({ apiKey: 'your-api-key' });
+  await FeatureDeck.init({ apiKey: 'your-api-key' });
 
-  await FeaturedDeck.setUser({
+  await FeatureDeck.setUser({
     externalUserId: 'user-123',
     username: 'johndoe',
     email: 'john@example.com',
@@ -563,17 +563,17 @@ export default function App() {
   }, []);
 
   return (
-    <FeaturedDeckProvider>
+    <FeatureDeckProvider>
       <View style={styles.container}>
         <Text style={styles.title}>My App</Text>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => FeaturedDeck.openFeatureBoard()}
+          onPress={() => FeatureDeck.openFeatureBoard()}
         >
           <Text style={styles.buttonText}>Feature Requests</Text>
         </TouchableOpacity>
       </View>
-    </FeaturedDeckProvider>
+    </FeatureDeckProvider>
   );
 }
 
@@ -597,7 +597,7 @@ const styles = StyleSheet.create({
                 Getting Your API Key
               </h2>
               <p className="text-muted mb-6">
-                To use FeaturedDeck, you need an API key:
+                To use FeatureDeck, you need an API key:
               </p>
               <ol className="list-decimal list-inside space-y-3 text-muted ml-4">
                 <li>
@@ -606,14 +606,14 @@ const styles = StyleSheet.create({
                     href="/login"
                     className="text-accent hover:opacity-80 transition-opacity"
                   >
-                    FeaturedDeck dashboard
+                    FeatureDeck dashboard
                   </Link>
                 </li>
                 <li>Navigate to your project settings</li>
                 <li>
                   Copy the API key and pass it to{" "}
                   <code className="bg-surface px-1.5 py-0.5 rounded text-xs">
-                    FeaturedDeck.init()
+                    FeatureDeck.init()
                   </code>
                 </li>
               </ol>
@@ -640,10 +640,10 @@ const styles = StyleSheet.create({
                 <li>
                   💬 GitHub:{" "}
                   <a
-                    href="https://github.com/FeaturedDeck/featuredeck-rn"
+                    href="https://github.com/FeatureDeck/featuredeck-rn"
                     className="text-accent hover:opacity-80 transition-opacity"
                   >
-                    github.com/FeaturedDeck/featuredeck-rn
+                    github.com/FeatureDeck/featuredeck-rn
                   </a>
                 </li>
                 <li>

@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 export default function Features() {
   return (
-    <section className="py-20 px-6 bg-surface">
+    <section className="py-20 px-6">
       <div className="max-w-5xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -65,14 +65,15 @@ export default function Features() {
             className="bg-background border border-border rounded-xl p-6"
           >
             <div className="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center mb-4">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-accent">
-                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
-                <path d="M13.73 21a2 2 0 0 1-3.46 0" />
-              </svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-accent">
+              <line x1="18" y1="20" x2="18" y2="10" />
+              <line x1="12" y1="20" x2="12" y2="4" />
+              <line x1="6" y1="20" x2="6" y2="14" />
+            </svg>
             </div>
-            <h3 className="font-medium mb-2">Release notifications</h3>
+            <h3 className="font-medium mb-2">Request insights</h3>
             <p className="text-muted text-[14px] leading-relaxed">
-              Voters get notified when their requested feature ships. Keep users engaged and informed.
+              Understand what users care about most. Spot patterns in feedback and make better product decisions.
             </p>
           </motion.div>
 
@@ -105,13 +106,18 @@ export default function Features() {
             className="bg-background border border-border rounded-xl p-6"
           >
             <div className="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center mb-4">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-accent">
-                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-              </svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-accent">
+              <line x1="8" y1="6" x2="21" y2="6" />
+              <line x1="8" y1="12" x2="21" y2="12" />
+              <line x1="8" y1="18" x2="21" y2="18" />
+              <circle cx="4" cy="6" r="1" />
+              <circle cx="4" cy="12" r="1" />
+              <circle cx="4" cy="18" r="1" />
+            </svg>
             </div>
-            <h3 className="font-medium mb-2">Comments & discussion</h3>
+            <h3 className="font-medium mb-2">Feature prioritization</h3>
             <p className="text-muted text-[14px] leading-relaxed">
-              Users can add context and discuss ideas. Understand the why behind every request.
+              Instantly see which ideas matter most. Prioritize development based on real user demand.
             </p>
           </motion.div>
 

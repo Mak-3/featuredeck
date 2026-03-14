@@ -41,7 +41,7 @@ export default function SDKDemo() {
 
   return (
     <>
-      <section id="demo" className="py-24 px-6 overflow-hidden">
+      <section id="demo" className="py-24 px-6 overflow-hidden bg-surface">
         <div className="max-w-5xl mx-auto">
           <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-20">
             <motion.div
@@ -109,7 +109,7 @@ export default function SDKDemo() {
         </div>
       </section>
 
-      <section className="py-20 px-6 bg-surface">
+      <section className="py-20 px-6">
         <div className="max-w-5xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

@@ -12,7 +12,7 @@ const faqs = [
   {
     question: "How does the voting system work?",
     answer:
-      "Each user gets one vote per feature request. They can FeatureDeck ideas they care about, and the most-wanted features naturally rise to the top. You see real demand at a glance.",
+      "Each user gets one vote per feature request. They can upvote ideas they care about, and the most-wanted features naturally rise to the top. You see real demand at a glance.",
   },
   {
     question: "Can users see what's coming next?",
@@ -22,7 +22,7 @@ const faqs = [
   {
     question: "How long does setup take?",
     answer:
-      "Most developers integrate FeaturedDeck in under 2 minutes. Install the SDK, initialize it with your API key, and you're ready to collect feedback. If you're using AI coding tools, setup can often take less than 30 seconds."
+      "Most developers integrate FeatureDeck in under 2 minutes. Install the SDK, initialize it with your API key, and you're ready to collect feedback. If you're using AI coding tools, setup can often take less than 30 seconds."
   },
   {
     question: "Does it work with Expo?",

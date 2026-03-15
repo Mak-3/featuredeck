@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { supabase } from "@/lib/supabase";
-
+import { Users, ClipboardList, Eye, ThumbsUp } from "lucide-react";
 interface FeatureRequest {
   id: string;
   title: string;
@@ -75,34 +75,42 @@ export default function DashboardContent() {
         }));
       }
 
-      // Fetch metrics
       if (projectId) {
-        // Get feature requests count
-        const allRequestsResponse = await fetch(
-          `/api/feedback?project_id=${projectId}`,
-          {
-            headers: {
-              'Authorization': `Bearer ${session.access_token}`,
-            },
-          }
-        );
+        const [allRequestsResponse, statsResponse] = await Promise.all([
+          fetch(`/api/feedback?project_id=${projectId}`, {
+            headers: { 'Authorization': `Bearer ${session.access_token}` },
+          }),
+          fetch(`/api/stats?project_id=${projectId}`, {
+            headers: { 'Authorization': `Bearer ${session.access_token}` },
+          }),
+        ]);
+
+        let requests: any[] = [];
+        let totalUpvotes = 0;
 
         if (allRequestsResponse.ok) {
           const allRequestsData = await allRequestsResponse.json();
-          const allRequests = allRequestsData.data || [];
-          
-          // Calculate upvotes (sum of votes)
-          const totalUpvotes = allRequests.reduce((sum: number, req: any) => {
+          requests = allRequestsData.data || [];
+          totalUpvotes = requests.reduce((sum: number, req: any) => {
             return sum + (req.votes?.[0]?.count || 0);
           }, 0);
-
-          setMetrics(prev => ({
-            ...prev,
-            requests: allRequests.length,
-            upvotes: totalUpvotes,
-            views: allRequests.length, // Using requests as views for now
-          }));
         }
+
+        let views = 0;
+        let users = 0;
+
+        if (statsResponse.ok) {
+          const statsData = await statsResponse.json();
+          views = statsData.data?.views || 0;
+          users = statsData.data?.users || 0;
+        }
+
+        setMetrics({
+          requests: requests.length,
+          upvotes: totalUpvotes,
+          views,
+          users,
+        });
       }
     } catch (err) {
       console.error('Error fetching dashboard data:', err);
@@ -115,41 +123,22 @@ export default function DashboardContent() {
     {
       label: "Users",
       value: metrics.users,
-      icon: (
-        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-          <circle cx="17.5" cy="8.5" r="2.5" />
-          <path d="M17.5 13c-1.5 0-2.5.5-2.5 1.5h5c0-1-.5-1.5-2.5-1.5z" />
-        </svg>
-      ),
+      icon: <Users className="w-5 h-5 text-white dark:text-black" />,
     },
     {
       label: "Requests",
       value: metrics.requests,
-      icon: (
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-        </svg>
-      ),
+      icon: <ClipboardList className="w-5 h-5 text-white dark:text-black" />,
     },
     {
       label: "Views",
       value: metrics.views,
-      icon: (
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-        </svg>
-      ),
+      icon: <Eye className="w-5 h-5 text-white dark:text-black" />,
     },
     {
       label: "Upvotes",
       value: metrics.upvotes,
-      icon: (
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
-        </svg>
-      ),
+      icon: <ThumbsUp className="w-5 h-5 text-white dark:text-black" />,
     },
   ];
 

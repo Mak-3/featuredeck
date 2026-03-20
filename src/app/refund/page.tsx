@@ -114,10 +114,10 @@ export default function RefundPolicyPage() {
               <p className="text-muted leading-relaxed mb-4">
                 To request a refund, email:{" "}
                 <a
-                  href="mailto:support@featuredeck.in"
+                  href="mailto:featuredeck.support@gmail.com"
                   className="text-accent hover:opacity-80 transition-opacity"
                 >
-                  support@featuredeck.in
+                  featuredeck.support@gmail.com
                 </a>
               </p>
               <p className="text-muted leading-relaxed mb-3">Include:</p>

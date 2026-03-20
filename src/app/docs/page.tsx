@@ -631,19 +631,19 @@ const styles = StyleSheet.create({
                 <li>
                   📧 Email:{" "}
                   <a
-                    href="mailto:support@featuredeck.in"
+                    href="mailto:featuredeck.support@gmail.com"
                     className="text-accent hover:opacity-80 transition-opacity"
                   >
-                    support@featuredeck.in
+                    featuredeck.support@gmail.com
                   </a>
                 </li>
                 <li>
                   💬 GitHub:{" "}
                   <a
-                    href="https://github.com/FeatureDeck/featuredeck-rn"
+                    href="https://github.com/Mak-3/featuredeck-react-native"
                     className="text-accent hover:opacity-80 transition-opacity"
                   >
-                    github.com/FeatureDeck/featuredeck-rn
+                    https://github.com/Mak-3/featuredeck-react-native
                   </a>
                 </li>
                 <li>
